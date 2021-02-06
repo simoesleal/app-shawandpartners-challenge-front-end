@@ -7,7 +7,6 @@
     :value="menuDrawer"
     :disable-resize-watcher="true"
     :disable-route-watcher="true"
-    :mobile-breakpoint="0"
   >
     <v-list dense>
       <template v-for="item in items">
