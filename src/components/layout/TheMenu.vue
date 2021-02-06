@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    v-if="isAuth"
     app
     :clipped="true"
     :dark="true"
@@ -21,7 +20,7 @@
         >
           <template v-slot:activator>
             <v-list-item-action>
-              <v-icon :color="parciomHexColor">{{ item.prependIcon }}</v-icon>
+              <v-icon>{{ item.prependIcon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="item.text"></v-list-item-title>
@@ -34,7 +33,7 @@
             @click="updateRouteThroughMenu(child.routeName, child.url)"
           >
             <v-list-item-action v-if="child.prependIcon">
-              <v-icon :color="parciomHexColor">{{ child.prependIcon }}</v-icon>
+              <v-icon>{{ child.prependIcon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>{{ child.text }}</v-list-item-title>
@@ -48,7 +47,7 @@
           @click="updateRouteThroughMenu(item.routeName, item.url)"
         >
           <v-list-item-action>
-            <v-icon :color="parciomHexColor">{{ item.prependIcon }}</v-icon>
+            <v-icon>{{ item.prependIcon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>{{ item.text }}</v-list-item-title>
@@ -60,7 +59,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import nav from "../../router/_nav";
 export default {
   data() {
@@ -70,8 +69,6 @@ export default {
   },
   computed: {
     ...mapState("HeaderLayout", ["menuDrawer"]),
-    ...mapState("Configuration", ["parciomHexColor"]),
-    ...mapGetters("Auth", ["isAuth"]),
   },
   methods: {
     updateRouteThroughMenu(routeName, url) {
