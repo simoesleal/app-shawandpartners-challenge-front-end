@@ -44,7 +44,9 @@
                 <p class="text-center text-truncate">{{ user.html_url }}</p>
               </v-col>
               <v-col cols="12">
-                <p class="text-center text-truncate">{{ user.created_at }}</p>
+                <p class="text-center text-truncate">
+                  {{ user.created_at | formatDate }}
+                </p>
               </v-col>
               <v-col class="d-flex justify-center">
                 <BaseButton
@@ -217,7 +219,7 @@
                           </span>
                         </v-col>
                         <v-col class="mt-n6" cols="12">
-                          <span>{{ user.created_at }}</span>
+                          <span>{{ user.created_at | formatDate }}</span>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -290,6 +292,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import moment from "moment";
 export default {
   name: "UserDetails",
 
@@ -298,21 +301,29 @@ export default {
       { text: "ID", value: "id" },
       { text: "Repository", value: "name" },
       { text: "URL", value: "html_url" },
-      { text: "Actions", value: "actions" }
+      { text: "Actions", value: "actions" },
     ],
-    tableSearch: null
+    tableSearch: null,
   }),
+
+  filters: {
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format("YYYY/MM/DD hh:mm");
+      }
+    },
+  },
 
   computed: {
     ...mapState("User", ["user", "repos"]),
-    ...mapGetters("User", ["getNumberOfRepos"])
+    ...mapGetters("User", ["getNumberOfRepos"]),
   },
 
   created() {
     if (!this.user && !this.repos) {
       this.$router.push({ name: "User" });
     }
-  }
+  },
 };
 </script>
 
