@@ -1,5 +1,5 @@
 const initialState = () => ({
-  linearLoaderStatus: false,
+  linearLoaderStatus: false
 });
 
 const state = initialState;
@@ -7,14 +7,14 @@ const state = initialState;
 const mutations = {
   RESET(state) {
     const clearState = initialState();
-    Object.keys(clearState).forEach((key) => {
+    Object.keys(clearState).forEach(key => {
       state[key] = clearState[key];
     });
   },
 
   SET_STATUS(state, value) {
     state.linearLoaderStatus = value;
-  },
+  }
 };
 
 const actions = {
@@ -24,7 +24,7 @@ const actions = {
 
   setStatus: ({ commit }, payload) => {
     commit("SET_STATUS", payload);
-  },
+  }
 };
 
 const getters = {};
@@ -34,5 +34,5 @@ export default {
   actions,
   mutations,
   getters,
-  namespaced: true,
+  namespaced: true
 };

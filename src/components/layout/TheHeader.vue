@@ -28,12 +28,12 @@ export default {
   name: "TheHeader",
 
   computed: {
-    ...mapState("Loader", ["linearLoaderStatus"]),
+    ...mapState("Loader", ["linearLoaderStatus"])
   },
 
   methods: {
-    ...mapActions("HeaderLayout", ["setMenuDrawer"]),
-  },
+    ...mapActions("HeaderLayout", ["setMenuDrawer"])
+  }
 };
 </script>
 

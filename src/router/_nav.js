@@ -7,13 +7,13 @@ export default {
       text: "Dashboard",
       prependIcon: "mdi-monitor-dashboard",
       routeName: "Dashboard",
-      url: "/dashboard",
+      url: "/dashboard"
     },
     {
       text: "Users",
       prependIcon: "mdi-account-group",
       routeName: "User",
-      url: "/user",
-    },
-  ],
+      url: "/user"
+    }
+  ]
 };

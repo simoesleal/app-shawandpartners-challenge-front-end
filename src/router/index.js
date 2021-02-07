@@ -15,7 +15,7 @@ const routes = [
         path: "dashboard",
         name: "Dashboard",
         component: () =>
-          import(/* webpackChunkName: "main" */ "../views/Dashboard.vue"),
+          import(/* webpackChunkName: "main" */ "../views/Dashboard.vue")
       },
       {
         path: "user",
@@ -28,7 +28,7 @@ const routes = [
             path: "",
             name: "User",
             component: () =>
-              import(/* webpackChunkName: "user" */ "../views/user/User.vue"),
+              import(/* webpackChunkName: "user" */ "../views/user/User.vue")
           },
           {
             path: "details",
@@ -36,18 +36,18 @@ const routes = [
             component: () =>
               import(
                 /* webpackChunkName: "user" */ "../views/user/UserDetails.vue"
-              ),
-          },
-        ],
-      },
-    ],
-  },
+              )
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;
