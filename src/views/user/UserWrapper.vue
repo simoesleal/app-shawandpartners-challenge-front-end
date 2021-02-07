@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "UserWrapper",
+  name: "UserWrapper"
 };
 </script>
 

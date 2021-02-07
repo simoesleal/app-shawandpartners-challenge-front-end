@@ -7,6 +7,8 @@ const initialState = () => ({
   user: null,
   repos: null,
   uriFilters: "",
+  initialSince: 0,
+  initialPerPage: 100
 });
 
 const state = initialState;
@@ -14,7 +16,7 @@ const state = initialState;
 const mutations = {
   RESET(state) {
     const clearState = initialState();
-    Object.keys(clearState).forEach((key) => {
+    Object.keys(clearState).forEach(key => {
       state[key] = clearState[key];
     });
   },
@@ -41,7 +43,7 @@ const mutations = {
 
   SET_REPO: (state, value) => {
     state.repos = value;
-  },
+  }
 };
 
 const actions = {
@@ -149,25 +151,25 @@ const actions = {
       }
       return false;
     }
-  },
+  }
 };
 
 const getters = {
-  firstUserId: (state) => {
+  firstUserId: state => {
     if (state.users && state.users.length) {
       return state.users[0].id;
     }
   },
-  lastUserId: (state) => {
+  lastUserId: state => {
     if (state.users && state.users.length) {
       let lastPos = state.users.length - 1;
       return state.users[lastPos].id;
     }
   },
 
-  getNumberOfRepos: (state) => {
+  getNumberOfRepos: state => {
     if (state.repos && state.repos.length) return state.repos.length;
-  },
+  }
 };
 
 export default {
@@ -175,5 +177,5 @@ export default {
   actions,
   mutations,
   getters,
-  namespaced: true,
+  namespaced: true
 };

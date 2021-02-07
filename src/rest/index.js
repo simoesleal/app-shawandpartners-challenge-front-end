@@ -6,9 +6,9 @@ class HttpConnection {
       baseURL: "https://mysterious-anchorage-18483.herokuapp.com/api/v1",
       headers: {
         "Content-Type": "application/json",
-        "X-API-DST": "S&P-CHALLENGE",
+        "X-API-DST": "S&P-CHALLENGE"
       },
-      withCredentials: false,
+      withCredentials: false
     });
   }
 

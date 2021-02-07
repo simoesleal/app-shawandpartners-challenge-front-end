@@ -9,9 +9,8 @@
 
 <script>
 export default {
-  name: "TheMain",
+  name: "TheMain"
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

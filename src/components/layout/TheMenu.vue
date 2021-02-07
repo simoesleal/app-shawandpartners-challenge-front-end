@@ -63,11 +63,11 @@ import nav from "../../router/_nav";
 export default {
   data() {
     return {
-      items: nav.items,
+      items: nav.items
     };
   },
   computed: {
-    ...mapState("HeaderLayout", ["menuDrawer"]),
+    ...mapState("HeaderLayout", ["menuDrawer"])
   },
   methods: {
     updateRouteThroughMenu(routeName, url) {
@@ -77,8 +77,8 @@ export default {
       )
         this.$router.push({ name: routeName });
       return false;
-    },
-  },
+    }
+  }
 };
 </script>
 

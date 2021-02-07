@@ -15,7 +15,7 @@ const requireComponent = require.context(
   /Base[A-Z]\w+\.(vue)$/
 );
 
-requireComponent.keys().forEach((fileName) => {
+requireComponent.keys().forEach(fileName => {
   // Pega a configuração do componente
   const componentConfig = requireComponent(fileName);
 
@@ -46,5 +46,5 @@ window._Vue = new Vue({
   router,
   store,
   vuetify,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");

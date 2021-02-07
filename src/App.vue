@@ -19,8 +19,8 @@ export default {
     TheHeader,
     TheMenu,
     TheMain,
-    TheFooter,
-  },
+    TheFooter
+  }
 };
 </script>
 

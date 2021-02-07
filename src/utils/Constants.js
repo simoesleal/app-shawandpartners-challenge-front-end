@@ -15,7 +15,7 @@ const SERVICE_UNAVAILABLE_DETAILS =
   "Serviço indisponível no momento. Por favor, tente novamente em alguns instântes.";
 const SERVICE_UNAVAILABLE_OBJ = {
   title: SERVICE_UNAVAILABLE,
-  message: SERVICE_UNAVAILABLE_DETAILS,
+  message: SERVICE_UNAVAILABLE_DETAILS
 };
 
 module.exports = {
@@ -27,5 +27,5 @@ module.exports = {
   HTTP_FORBIDDEN,
   HTTP_NOT_FOUND,
   ERROR_MESSAGE,
-  SERVICE_UNAVAILABLE_OBJ,
+  SERVICE_UNAVAILABLE_OBJ
 };
