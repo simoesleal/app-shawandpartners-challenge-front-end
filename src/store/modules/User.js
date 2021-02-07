@@ -90,6 +90,38 @@ const actions = {
   /**
    * @description Get the details of an user from github.
    */
+  async getUser({ commit, dispatch }, username) {
+    commit("SET_USERS", null);
+    dispatch("Loader/setStatus", true, { root: true });
+    let response;
+    try {
+      response = await HttpConnection.connection.get(
+        `${GET_USERS}/${username}`
+      );
+      commit("SET_URI_FILTERS", null);
+      if (response && response.data.code === HTTP_OK) {
+        dispatch("Loader/setStatus", false, { root: true });
+        const listOfUsers = [];
+        const users = response.data.payload;
+        listOfUsers.push(users);
+        commit("SET_USERS", listOfUsers);
+      }
+      return true;
+    } catch (error) {
+      dispatch("Loader/setStatus", false, { root: true });
+      const { response } = error;
+      if (response && response.data.error) {
+        alert(response.data.message);
+      } else {
+        alert(SERVICE_UNAVAILABLE_DETAILS);
+      }
+      return false;
+    }
+  },
+
+  /**
+   * @description Get the details of an user from github.
+   */
   async getUserDetails({ commit, dispatch }, username) {
     commit("SET_USER", null);
     commit("SET_REPO", null);
@@ -131,6 +163,10 @@ const getters = {
       let lastPos = state.users.length - 1;
       return state.users[lastPos].id;
     }
+  },
+
+  getNumberOfRepos: (state) => {
+    if (state.repos && state.repos.length) return state.repos.length;
   },
 };
 

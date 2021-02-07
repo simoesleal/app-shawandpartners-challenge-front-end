@@ -46,6 +46,15 @@
               <v-col cols="12">
                 <p class="text-center text-truncate">{{ user.created_at }}</p>
               </v-col>
+              <v-col class="d-flex justify-center">
+                <BaseButton
+                  :href="user.html_url"
+                  :elevation="2"
+                  :target="'_blank'"
+                  ><v-icon :color="'#AAC173'">mdi-github</v-icon
+                  >Profile</BaseButton
+                >
+              </v-col>
             </v-row>
           </div>
         </BaseSheet>
@@ -53,7 +62,10 @@
       <v-row class="mt-1">
         <v-col>
           <v-subheader>
-            <span class="text-uppercase green-border-bottom">Repositories</span>
+            <span class="text-h6 mr-3">{{ this.getNumberOfRepos }}</span>
+            <span class="text-uppercase green-border-bottom">
+              Repositories</span
+            >
           </v-subheader>
         </v-col>
       </v-row>
@@ -97,8 +109,8 @@
                     :href="repository.html_url"
                     :elevation="2"
                     :target="'_blank'"
-                    ><v-icon :color="'#AAC173'">mdi-github</v-icon
-                    >open</BaseButton
+                    ><v-icon :color="'#AAC173'">mdi-github</v-icon>open
+                    repository</BaseButton
                   >
                 </v-col>
               </v-row>
@@ -184,6 +196,17 @@
                         </v-col>
                         <v-col class="mt-n6" cols="12">
                           <span>{{ user.html_url }}</span>
+                          <BaseButton
+                            class="ml-3"
+                            :href="user.html_url"
+                            :icon="true"
+                            :elevation="2"
+                            :small="true"
+                            :target="'_blank'"
+                            ><v-icon :color="'#AAC173'"
+                              >mdi-github</v-icon
+                            ></BaseButton
+                          >
                         </v-col>
 
                         <v-col cols="12">
@@ -210,8 +233,11 @@
               <v-card-title>
                 <v-col>
                   <v-subheader>
-                    <span class="text-uppercase green-border-bottom"
-                      >Repositories</span
+                    <span class="text-h4 mr-3">{{
+                      this.getNumberOfRepos
+                    }}</span>
+                    <span class="text-uppercase green-border-bottom">
+                      Repositories</span
                     >
                   </v-subheader>
                 </v-col>
@@ -263,7 +289,7 @@
 /* */
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "UserDetails",
 
@@ -279,6 +305,7 @@ export default {
 
   computed: {
     ...mapState("User", ["user", "repos"]),
+    ...mapGetters("User", ["getNumberOfRepos"]),
   },
 
   created() {

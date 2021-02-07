@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-col cols="10" md="4">
           <BaseInput
-            v-model.trim="searchField"
+            v-model="searchField"
             :backgroundColor="'white'"
             :color="'#aac173'"
             :clearable="true"
@@ -18,7 +18,12 @@
         </v-col>
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
         <v-col cols="1">
-          <BaseButton :elevation="1" :fab="true" xSmall>
+          <BaseButton
+            @click="setUserByUsername()"
+            :elevation="1"
+            :fab="true"
+            xSmall
+          >
             <v-icon :color="'#aac173'">mdi-magnify</v-icon>
           </BaseButton>
         </v-col>
@@ -99,25 +104,6 @@
             </BaseSheet>
           </div>
         </div>
-        <v-container class="mt-n6">
-          <v-row no-gutters>
-            <v-col class="ml-3">
-              <v-btn fab small :disabled="firstUserId > 1 ? false : true">
-                <v-icon :color="'#5C6C54'">mdi-arrow-left-drop-circle</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col class="d-flex justify-center">
-              <p class="text-h5" :style="'color: #5C6C54;'">
-                {{ firstUserId }} to {{ lastUserId }}
-              </p>
-            </v-col>
-            <v-col class="d-flex justify-end mr-3">
-              <v-btn fab small>
-                <v-icon :color="'#5C6C54'">mdi-arrow-right-drop-circle</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
       </template>
       <v-skeleton-loader v-else transition type="card"></v-skeleton-loader>
     </template>
@@ -175,6 +161,31 @@
         </v-row>
       </v-container>
     </template>
+
+    <v-container v-if="users && users.length > 1" class="mt-n6 mt-md-0">
+      <v-row no-gutters>
+        <v-col class="ml-3">
+          <v-btn
+            @click="getPreviousDataSet()"
+            fab
+            small
+            :disabled="firstUserId > 1 ? false : true"
+          >
+            <v-icon :color="'#5C6C54'">mdi-arrow-left-drop-circle</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col class="d-flex justify-center">
+          <p class="text-h5" :style="'color: #5C6C54;'">
+            {{ firstUserId }} to {{ lastUserId }}
+          </p>
+        </v-col>
+        <v-col class="d-flex justify-end mr-3">
+          <v-btn @click="getNextDataSet()" fab small>
+            <v-icon :color="'#5C6C54'">mdi-arrow-right-drop-circle</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -203,17 +214,59 @@ export default {
   },
 
   methods: {
-    ...mapActions("User", ["getListOfUsers", "getUserDetails"]),
+    ...mapActions("User", [
+      "getListOfUsers",
+      "getUser",
+      "getUserDetails",
+      "resetStore",
+    ]),
 
     async getDetails(username) {
       if (await this.getUserDetails(username)) {
         this.$router.push({ name: "UserDetails" });
       }
     },
+
+    async setUserByUsername() {
+      if (this.searchField && this.searchField.length) {
+        await this.getUser(this.searchField);
+      } else {
+        await this.getListOfUsers({
+          since: this.initialSince,
+          per_page: this.initialPerPage,
+        });
+      }
+    },
+
+    async getPreviousDataSet() {
+      let newSince;
+      if (this.firstUserId < this.initialPerPage) {
+        newSince = 0;
+      } else {
+        newSince = this.firstUserId - this.initialPerPage;
+      }
+      this.getListOfUsers({
+        since: newSince,
+        per_page: this.initialPerPage,
+      });
+    },
+
+    async getNextDataSet() {
+      this.getListOfUsers({
+        since: this.lastUserId,
+        per_page: this.initialPerPage,
+      });
+    },
   },
 
   created() {
     if (!this.users || this.users.length === 0) {
+      this.getListOfUsers({
+        since: this.initialSince,
+        per_page: this.initialPerPage,
+      });
+    } else if (this.users.length === 1) {
+      this.resetStore();
       this.getListOfUsers({
         since: this.initialSince,
         per_page: this.initialPerPage,
