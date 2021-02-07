@@ -11,18 +11,29 @@
     <v-toolbar-title>
       <span class="my-text-header">S&P</span>
     </v-toolbar-title>
+    <BaseLinearProgress
+      :active="this.$store.state.Loader.linearLoaderStatus"
+      :color="'lime lighten-4'"
+      bottom
+      fixed
+      indeterminate
+    />
   </v-app-bar>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "TheHeader",
+
+  computed: {
+    ...mapState("Loader", ["linearLoaderStatus"]),
+  },
+
   methods: {
     ...mapActions("HeaderLayout", ["setMenuDrawer"]),
   },
-  computed: {},
 };
 </script>
 

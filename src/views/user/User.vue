@@ -1,5 +1,6 @@
 <template>
   <div id="user">
+    <!-- COMMON LAYOUT -->
     <v-container class="mt-n16">
       <v-row no-gutters>
         <v-col cols="10" md="4">
@@ -17,114 +18,116 @@
         </v-col>
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
         <v-col cols="1">
-          <BaseButton
-            :elevation="1"
-            :fab="true"
-            xSmall
-            :disabled="searchField && searchField.length ? false : true"
-          >
+          <BaseButton :elevation="1" :fab="true" xSmall>
             <v-icon :color="'#aac173'">mdi-magnify</v-icon>
           </BaseButton>
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- MOBILE LAYOUT -->
     <template v-if="$vuetify.breakpoint.smAndDown">
-      <div class="wrapper" :style="`height: ${300}px;`">
-        <div
-          v-for="(user, index) in users"
-          :key="index"
-          class="ml-2 mr-8"
-          :style="`min-width: ${200}px;`"
-        >
-          <BaseSheet
-            class="full-border-radius"
-            :color="'white'"
-            :dark="false"
-            :elevation="6"
-            :height="'250px'"
-            :light="true"
-            :outlined="false"
-            :rounded="false"
-            :shaped="false"
-            :tile="false"
-            :width="'200px'"
+      <template v-if="users && users">
+        <div class="wrapper" :style="`height: ${300}px;`">
+          <div
+            v-for="(user, index) in users"
+            :key="index"
+            class="ml-2 mr-8"
+            :style="`min-width: ${200}px;`"
           >
-            <div>
-              <v-row no-gutters class="pa-2">
-                <v-col cols="12" class="mb-3">
-                  <v-img
-                    class="mx-auto"
-                    :style="'border-radius: 100%;'"
-                    :height="'100px'"
-                    :width="'100px'"
-                    :src="user.avatar_url"
-                  ></v-img>
-                </v-col>
-                <v-col cols="6" class="d-flex">
-                  <span
-                    class="text-uppercase font-weight-medium mr-3"
-                    :style="'color: #AAC173;'"
-                    >ID
-                  </span>
-                </v-col>
-                <v-col cols="6" class="d-flex justify-start">
-                  <span>{{ user.id }}</span>
-                </v-col>
-                <v-col cols="6" class="d-flex">
-                  <span
-                    class="text-uppercase font-weight-medium mr-3"
-                    :style="'color: #AAC173;'"
-                    >Login
-                  </span>
-                </v-col>
-                <v-col cols="6" class="d-flex justify-start">
-                  <p class="text-truncate">{{ user.login }}</p>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col class="d-flex justify-center">
-                  <BaseButton
-                    @click="getDetails(user.login)"
-                    :color="'#5C6C54'"
-                    dark
-                    :elevation="0"
-                    :rounded="true"
-                    small
-                  >
-                    Details
-                    <v-icon class="ml-2" small>mdi-account-details</v-icon>
-                  </BaseButton>
-                </v-col>
-              </v-row>
-            </div>
-          </BaseSheet>
+            <BaseSheet
+              class="full-border-radius"
+              :color="'white'"
+              :dark="false"
+              :elevation="6"
+              :height="'250px'"
+              :light="true"
+              :outlined="false"
+              :rounded="false"
+              :shaped="false"
+              :tile="false"
+              :width="'200px'"
+            >
+              <div>
+                <v-row no-gutters class="pa-2">
+                  <v-col cols="12" class="mb-3">
+                    <v-img
+                      class="mx-auto"
+                      :style="'border-radius: 100%;'"
+                      :height="'100px'"
+                      :width="'100px'"
+                      :src="user.avatar_url"
+                    ></v-img>
+                  </v-col>
+                  <v-col cols="6" class="d-flex">
+                    <span
+                      class="text-uppercase font-weight-medium mr-3"
+                      :style="'color: #AAC173;'"
+                      >ID
+                    </span>
+                  </v-col>
+                  <v-col cols="6" class="d-flex justify-start">
+                    <span>{{ user.id }}</span>
+                  </v-col>
+                  <v-col cols="6" class="d-flex">
+                    <span
+                      class="text-uppercase font-weight-medium mr-3"
+                      :style="'color: #AAC173;'"
+                      >Login
+                    </span>
+                  </v-col>
+                  <v-col cols="6" class="d-flex justify-start">
+                    <p class="text-truncate">{{ user.login }}</p>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-col class="d-flex justify-center">
+                    <BaseButton
+                      @click="getDetails(user.login)"
+                      :color="'#5C6C54'"
+                      dark
+                      :elevation="0"
+                      :rounded="true"
+                      small
+                    >
+                      Details
+                      <v-icon class="ml-2" small>mdi-account-details</v-icon>
+                    </BaseButton>
+                  </v-col>
+                </v-row>
+              </div>
+            </BaseSheet>
+          </div>
         </div>
-      </div>
-      <v-container class="mt-n6">
-        <v-row no-gutters>
-          <v-col class="ml-3">
-            <v-btn fab small :disabled="firstUserId > 1 ? false : true">
-              <v-icon :color="'#5C6C54'">mdi-arrow-left-drop-circle</v-icon>
-            </v-btn>
-          </v-col>
-          <v-col class="d-flex justify-center">
-            <p class="text-h5" :style="'color: #5C6C54;'">
-              {{ firstUserId }} to {{ lastUserId }}
-            </p>
-          </v-col>
-          <v-col class="d-flex justify-end mr-3">
-            <v-btn fab small>
-              <v-icon :color="'#5C6C54'">mdi-arrow-right-drop-circle</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+        <v-container class="mt-n6">
+          <v-row no-gutters>
+            <v-col class="ml-3">
+              <v-btn fab small :disabled="firstUserId > 1 ? false : true">
+                <v-icon :color="'#5C6C54'">mdi-arrow-left-drop-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col class="d-flex justify-center">
+              <p class="text-h5" :style="'color: #5C6C54;'">
+                {{ firstUserId }} to {{ lastUserId }}
+              </p>
+            </v-col>
+            <v-col class="d-flex justify-end mr-3">
+              <v-btn fab small>
+                <v-icon :color="'#5C6C54'">mdi-arrow-right-drop-circle</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+      <v-skeleton-loader v-else transition type="card"></v-skeleton-loader>
     </template>
+
+    <!-- DESKTOP LAYOUT -->
     <template v-else>
       <v-container>
         <v-row>
           <v-col>
-            <v-card>
+            <v-card v-if="users && users.length">
               <v-card-title>
                 <v-col cols="3" class="ml-auto">
                   <v-text-field
@@ -163,6 +166,11 @@
                 </template>
               </v-data-table>
             </v-card>
+            <v-skeleton-loader
+              v-else
+              transition
+              type="table"
+            ></v-skeleton-loader>
           </v-col>
         </v-row>
       </v-container>
@@ -199,17 +207,18 @@ export default {
 
     async getDetails(username) {
       if (await this.getUserDetails(username)) {
-        console.log("entrou");
         this.$router.push({ name: "UserDetails" });
       }
     },
   },
 
   created() {
-    this.getListOfUsers({
-      since: this.initialSince,
-      per_page: this.initialPerPage,
-    });
+    if (!this.users || this.users.length === 0) {
+      this.getListOfUsers({
+        since: this.initialSince,
+        per_page: this.initialPerPage,
+      });
+    }
   },
 };
 </script>

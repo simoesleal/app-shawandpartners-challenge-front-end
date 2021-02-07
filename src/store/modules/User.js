@@ -61,6 +61,7 @@ const actions = {
    */
   async getListOfUsers({ commit, dispatch, state }, { since, per_page }) {
     commit("SET_URI_FILTERS", null);
+    commit("SET_USERS", null);
     dispatch("Loader/setStatus", true, { root: true });
     dispatch("setUriFilters", { since, per_page });
     let response;
@@ -79,21 +80,8 @@ const actions = {
       const { response } = error;
       if (response && response.data.error) {
         alert(response.data.message);
-        /* dispatch(
-          "Notification/setBaseModal",
-          {
-            title: "Atenção!",
-            message: response.data.message,
-            code: response.data.error.code,
-            details: response.data.error.message,
-          },
-          { root: true }
-        ); */
       } else {
         alert(SERVICE_UNAVAILABLE_DETAILS);
-        /* dispatch("Notification/setBaseModal", SERVICE_UNAVAILABLE_DETAILS, {
-          root: true,
-        }); */
       }
       return false;
     }
@@ -124,21 +112,8 @@ const actions = {
       const { response } = error;
       if (response && response.data.error) {
         alert(response.data.message);
-        /* dispatch(
-          "Notification/setBaseModal",
-          {
-            title: "Atenção!",
-            message: response.data.message,
-            code: response.data.error.code,
-            details: response.data.error.message,
-          },
-          { root: true }
-        ); */
       } else {
         alert(SERVICE_UNAVAILABLE_DETAILS);
-        /* dispatch("Notification/setBaseModal", SERVICE_UNAVAILABLE_DETAILS, {
-          root: true,
-        }); */
       }
       return false;
     }

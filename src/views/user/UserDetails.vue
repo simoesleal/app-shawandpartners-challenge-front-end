@@ -57,9 +57,9 @@
           </v-subheader>
         </v-col>
       </v-row>
-      <div class="wrapper" :style="`height: ${150}px;`">
+      <div class="wrapper" :style="`height: ${200}px;`">
         <div
-          v-for="(repository, index) in repositories"
+          v-for="(repository, index) in repos"
           :key="index"
           class="ml-2 mr-8"
           :style="`min-width: ${100}%;`"
@@ -69,7 +69,7 @@
             :color="'white'"
             :dark="false"
             :elevation="6"
-            :height="'130px'"
+            :height="'180px'"
             :light="true"
             :outlined="false"
             :rounded="false"
@@ -91,6 +91,15 @@
                   <p class="text-center text-truncate">
                     {{ repository.html_url }}
                   </p>
+                </v-col>
+                <v-col class="d-flex justify-center">
+                  <BaseButton
+                    :href="repository.html_url"
+                    :elevation="2"
+                    :target="'_blank'"
+                    ><v-icon :color="'#AAC173'">mdi-github</v-icon
+                    >open</BaseButton
+                  >
                 </v-col>
               </v-row>
             </div>
@@ -224,6 +233,24 @@
                 :search="tableSearch"
                 no-data-text="Repositories not found!"
               >
+                <template v-slot:item.actions="{ item }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <BaseButton
+                        :href="item.html_url"
+                        v-bind="attrs"
+                        v-on="on"
+                        :icon="true"
+                        :elevation="2"
+                        :target="'_blank'"
+                        ><v-icon :color="'#AAC173'"
+                          >mdi-github</v-icon
+                        ></BaseButton
+                      >
+                    </template>
+                    <span>GitHub Repository</span>
+                  </v-tooltip>
+                </template>
               </v-data-table>
             </v-card>
           </v-col>
@@ -245,12 +272,19 @@ export default {
       { text: "ID", value: "id" },
       { text: "Repository", value: "name" },
       { text: "URL", value: "html_url" },
+      { text: "Actions", value: "actions" },
     ],
     tableSearch: null,
   }),
 
   computed: {
     ...mapState("User", ["user", "repos"]),
+  },
+
+  created() {
+    if (!this.user && !this.repos) {
+      this.$router.push({ name: "User" });
+    }
   },
 };
 </script>
