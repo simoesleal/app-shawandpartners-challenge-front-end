@@ -120,7 +120,7 @@
       </div>
     </template>
     <template v-else>
-      <v-container>
+      <v-container v-if="user">
         <v-row>
           <v-col>
             <div
@@ -298,21 +298,21 @@ export default {
       { text: "ID", value: "id" },
       { text: "Repository", value: "name" },
       { text: "URL", value: "html_url" },
-      { text: "Actions", value: "actions" },
+      { text: "Actions", value: "actions" }
     ],
-    tableSearch: null,
+    tableSearch: null
   }),
 
   computed: {
     ...mapState("User", ["user", "repos"]),
-    ...mapGetters("User", ["getNumberOfRepos"]),
+    ...mapGetters("User", ["getNumberOfRepos"])
   },
 
   created() {
     if (!this.user && !this.repos) {
       this.$router.push({ name: "User" });
     }
-  },
+  }
 };
 </script>
 

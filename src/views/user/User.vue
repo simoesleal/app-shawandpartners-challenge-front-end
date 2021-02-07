@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-col cols="10" md="4">
           <BaseInput
-            v-model="searchField"
+            v-model.lazy.trim="searchField"
             :backgroundColor="'white'"
             :color="'#aac173'"
             :clearable="true"
