@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-col cols="10" md="4">
           <BaseInput
-            v-model.trim.lazy="searchField"
+            v-model.trim="searchField"
             :backgroundColor="'white'"
             :color="'#aac173'"
             :clearable="true"
@@ -17,7 +17,12 @@
         </v-col>
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
         <v-col cols="1">
-          <BaseButton :elevation="1" :fab="true" xSmall>
+          <BaseButton
+            :elevation="1"
+            :fab="true"
+            xSmall
+            :disabled="searchField && searchField.length ? false : true"
+          >
             <v-icon :color="'#aac173'">mdi-magnify</v-icon>
           </BaseButton>
         </v-col>
@@ -79,6 +84,7 @@
               <v-row no-gutters>
                 <v-col class="d-flex justify-center">
                   <BaseButton
+                    @click="getDetails(user.login)"
                     :color="'#5C6C54'"
                     dark
                     :elevation="0"
@@ -97,9 +103,14 @@
       <v-container class="mt-n6">
         <v-row no-gutters>
           <v-col class="ml-3">
-            <v-btn fab small>
+            <v-btn fab small :disabled="firstUserId > 1 ? false : true">
               <v-icon :color="'#5C6C54'">mdi-arrow-left-drop-circle</v-icon>
             </v-btn>
+          </v-col>
+          <v-col class="d-flex justify-center">
+            <p class="text-h5" :style="'color: #5C6C54;'">
+              {{ firstUserId }} to {{ lastUserId }}
+            </p>
           </v-col>
           <v-col class="d-flex justify-end mr-3">
             <v-btn fab small>
@@ -133,10 +144,11 @@
                 :search="tableSearch"
                 no-data-text="Users not found!"
               >
-                <template v-slot:item.actions="{}">
+                <template v-slot:item.actions="{ item }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <BaseButton
+                        @click="getDetails(item.login)"
                         v-bind="attrs"
                         v-on="on"
                         :icon="true"
@@ -159,10 +171,13 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "User",
 
   data: () => ({
+    initialSince: 0,
+    initialPerPage: 100,
     h: 100,
     mw: 150,
     searchField: null,
@@ -172,58 +187,30 @@ export default {
       { text: "Login", value: "login" },
       { text: "Actions", value: "actions" },
     ],
-    users: [
-      {
-        login: "technoweenietechnoweenietechnoweenie",
-        id: 21,
-        node_id: "MDQ6VXNlcjIx",
-        avatar_url: "https://avatars.githubusercontent.com/u/21?v=4",
-        gravatar_id: "",
-        url: "https://api.github.com/users/technoweenie",
-        html_url: "https://github.com/technoweenie",
-        followers_url: "https://api.github.com/users/technoweenie/followers",
-        following_url:
-          "https://api.github.com/users/technoweenie/following{/other_user}",
-        gists_url: "https://api.github.com/users/technoweenie/gists{/gist_id}",
-        starred_url:
-          "https://api.github.com/users/technoweenie/starred{/owner}{/repo}",
-        subscriptions_url:
-          "https://api.github.com/users/technoweenie/subscriptions",
-        organizations_url: "https://api.github.com/users/technoweenie/orgs",
-        repos_url: "https://api.github.com/users/technoweenie/repos",
-        events_url:
-          "https://api.github.com/users/technoweenie/events{/privacy}",
-        received_events_url:
-          "https://api.github.com/users/technoweenie/received_events",
-        type: "User",
-        site_admin: false,
-      },
-      {
-        login: "macournoyer",
-        id: 22,
-        node_id: "MDQ6VXNlcjIy",
-        avatar_url: "https://avatars.githubusercontent.com/u/22?v=4",
-        gravatar_id: "",
-        url: "https://api.github.com/users/macournoyer",
-        html_url: "https://github.com/macournoyer",
-        followers_url: "https://api.github.com/users/macournoyer/followers",
-        following_url:
-          "https://api.github.com/users/macournoyer/following{/other_user}",
-        gists_url: "https://api.github.com/users/macournoyer/gists{/gist_id}",
-        starred_url:
-          "https://api.github.com/users/macournoyer/starred{/owner}{/repo}",
-        subscriptions_url:
-          "https://api.github.com/users/macournoyer/subscriptions",
-        organizations_url: "https://api.github.com/users/macournoyer/orgs",
-        repos_url: "https://api.github.com/users/macournoyer/repos",
-        events_url: "https://api.github.com/users/macournoyer/events{/privacy}",
-        received_events_url:
-          "https://api.github.com/users/macournoyer/received_events",
-        type: "User",
-        site_admin: false,
-      },
-    ],
   }),
+
+  computed: {
+    ...mapState("User", ["users"]),
+    ...mapGetters("User", ["lastUserId", "firstUserId"]),
+  },
+
+  methods: {
+    ...mapActions("User", ["getListOfUsers", "getUserDetails"]),
+
+    async getDetails(username) {
+      if (await this.getUserDetails(username)) {
+        console.log("entrou");
+        this.$router.push({ name: "UserDetails" });
+      }
+    },
+  },
+
+  created() {
+    this.getListOfUsers({
+      since: this.initialSince,
+      per_page: this.initialPerPage,
+    });
+  },
 };
 </script>
 
